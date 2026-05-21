@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { db } from "./firebase";
 import {
   collection,
@@ -14,15 +14,11 @@ import {
 import {
   Trophy,
   Calendar,
-  User,
   Plus,
   Minus,
   ChevronRight,
   Settings,
-  Award,
   Shield,
-  Info,
-  ChevronLeft,
   CheckCircle2,
   AlertCircle,
 } from 'lucide-react';
