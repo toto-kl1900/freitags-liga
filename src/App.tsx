@@ -58,6 +58,9 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'leaderboard' | 'admin'>(
     'leaderboard'
   );
+  const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
+
+const ADMIN_PASSWORD = "dch24";
   const [matchdays, setMatchdays] = useState<Matchday[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>(() => {
     // Standardmäßig aktuelles Datum als YYYY-MM-DD
@@ -342,7 +345,21 @@ const handleSaveMatchday = async () => {
 
           <button
             id="tab-admin-btn"
-            onClick={() => setActiveTab('admin')}
+            onClick={() => {
+              if (isAdminUnlocked) {
+                setActiveTab('admin');
+                return;
+              }
+            
+              const password = window.prompt('Bitte Admin-Passwort eingeben:');
+            
+              if (password === ADMIN_PASSWORD) {
+                setIsAdminUnlocked(true);
+                setActiveTab('admin');
+              } else if (password !== null) {
+                window.alert('Falsches Passwort');
+              }
+            }}
             className={`py-3 px-4 rounded-xl flex items-center justify-center gap-2 font-bold text-sm tracking-wide transition-all duration-200 uppercase ${
               activeTab === 'admin'
                 ? 'bg-red-600 text-white shadow-lg shadow-red-900/30 font-black'
