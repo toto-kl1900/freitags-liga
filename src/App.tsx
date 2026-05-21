@@ -2,7 +2,7 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
-
+import logo from "./assets/logo.png";
 import { useState, useEffect } from 'react';
 import { db } from "./firebase";
 import {
@@ -300,7 +300,11 @@ const handleSaveMatchday = async () => {
             {/* Integriertes, geometrisch-balanciertes Sport-League-Emblem */}
             <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center shadow-lg relative overflow-hidden shrink-0 border border-amber-300/35">
               <div className="absolute inset-0 bg-slate-950/10 rotate-45 transform origin-center"></div>
-              <Trophy className="w-6 h-6 text-slate-950 relative z-10" />
+              <img
+             src={logo}
+             alt="DC Holzbock"
+              className="w-10 h-10 object-contain relative z-10 rounded-lg"
+/>
             </div>
             <div>
               <h1 className="text-lg font-black uppercase tracking-wider text-white">
