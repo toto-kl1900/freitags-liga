@@ -311,7 +311,7 @@ const handleSaveMatchday = async () => {
             </div>
             <div>
               <h1 className="text-lg font-black uppercase tracking-wider text-white">
-                Freitags-Liga
+                DC Holzbock Liga
               </h1>
               <p className="text-[10px] text-blue-400 font-mono tracking-widest uppercase">
                 Rangliste & Admin
