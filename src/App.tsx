@@ -500,7 +500,21 @@ const handleSaveMatchday = async () => {
                         </span>
                       </div>
                       <button
-                        onClick={() => handleLoadMatchdayToEdit(m)}
+                        onClick={() => {
+                          if (isAdminUnlocked) {
+                            handleLoadMatchdayToEdit(m);
+                            return;
+                          }
+                        
+                          const password = window.prompt('Bitte Admin-Passwort eingeben:');
+                        
+                          if (password === ADMIN_PASSWORD) {
+                            setIsAdminUnlocked(true);
+                            handleLoadMatchdayToEdit(m);
+                          } else if (password !== null) {
+                            window.alert('Falsches Passwort');
+                          }
+                        }}
                         className="text-[10px] uppercase font-black tracking-wider text-slate-400 hover:text-blue-400 flex items-center gap-1 bg-slate-800/80 px-2.5 py-1.5 rounded-lg border border-slate-800/60"
                       >
                         Bearbeiten
