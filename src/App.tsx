@@ -57,12 +57,25 @@ interface PlayerStats {
 }
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'leaderboard' | 'admin'>(
-    'leaderboard'
-  );
-  const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
+  const [activeTab, setActiveTab] = useState<
+  'leaderboard' | 'admin' | 'events'
+>('leaderboard');
+const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
 
 const ADMIN_PASSWORD = "dch24";
+const [events, setEvents] = useState([
+  {
+    date: '2026-05-30',
+    title: 'Ligaspieltag',
+    description: 'Freitag ab 19:00 Uhr',
+  },
+]);
+
+const [newEvent, setNewEvent] = useState({
+  date: '',
+  title: '',
+  description: '',
+});
   const [matchdays, setMatchdays] = useState<Matchday[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>(() => {
     // Standardmäßig aktuelles Datum als YYYY-MM-DD
@@ -346,6 +359,17 @@ const handleSaveMatchday = async () => {
           </button>
 
           <button
+  onClick={() => setActiveTab('events')}
+  className={`py-3 px-4 rounded-xl flex items-center justify-center gap-2 font-bold text-sm tracking-wide transition-all duration-200 ${
+    activeTab === 'events'
+      ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/30'
+      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+  }`}
+>
+  📅 Termine
+</button>
+
+          <button
             id="tab-admin-btn"
             onClick={() => {
               if (isAdminUnlocked) {
@@ -529,6 +553,36 @@ const handleSaveMatchday = async () => {
         )}
 
         {/* TAB 2: ADMIN BEREICH */}
+        {activeTab === 'events' && (
+  <div className="space-y-4">
+    <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
+      <h2 className="text-lg font-bold text-white mb-4">
+        📅 Termine
+      </h2>
+
+      <div className="space-y-3">
+        {events.map((event, index) => (
+          <div
+            key={index}
+            className="bg-slate-800/60 rounded-xl p-4 border border-slate-700"
+          >
+            <div className="text-blue-400 font-bold">
+              {event.date}
+            </div>
+
+            <div className="text-white text-lg font-semibold mt-1">
+              {event.title}
+            </div>
+
+            <div className="text-slate-300 text-sm mt-1">
+              {event.description}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
         {activeTab === 'admin' && (
           <div className="space-y-6">
             {/* Header / Einweisung */}
