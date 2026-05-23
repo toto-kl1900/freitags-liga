@@ -9,7 +9,6 @@ import {
   collection,
   getDocs,
   setDoc,
-  deleteDoc,
   doc
 } from "firebase/firestore";
 import {
@@ -56,6 +55,13 @@ interface PlayerStats {
   avgPoints: number; // Durchschnitt Punkte pro Teilnahme
 }
 
+interface EventItem {
+  id?: string;
+  date: string;
+  title: string;
+  description: string;
+}
+
 export default function App() {
   const [activeTab, setActiveTab] = useState<
   'leaderboard' | 'admin' | 'events'
@@ -63,22 +69,9 @@ export default function App() {
 const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
 
 const ADMIN_PASSWORD = "dch24";
+  const [events, setEvents] = useState<EventItem[]>([]);
 
-  const [events, setEvents] = useState([
-    {
-      date: '2026-05-30',
-      title: 'Ligaspieltag',
-      description: 'Freitag ab 19:00 Uhr',
-    },
-  ]);
-  
-  const [newEvent, setNewEvent] = useState({
-    date: '',
-    title: '',
-    description: '',
-  });
-
-  const [matchdays, setMatchdays] = useState<Matchday[]>([]);
+const [matchdays, setMatchdays] = useState<Matchday[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>(() => {
     // Standardmäßig aktuelles Datum als YYYY-MM-DD
     const today = new Date();
@@ -116,14 +109,21 @@ useEffect(() => {
       );
 
       setMatchdays(loadedMatchdays);
+
       const eventsSnapshot = await getDocs(collection(db, "events"));
+      const loadedEvents: EventItem[] = eventsSnapshot.docs.map((docSnap) => {
+        const data = docSnap.data() as Omit<EventItem, "id">;
 
-const loadedEvents = eventsSnapshot.docs.map((docSnap) => ({
-  id: docSnap.id,
-  ...docSnap.data(),
-}));
+        return {
+          id: docSnap.id,
+          date: data.date || "",
+          title: data.title || "",
+          description: data.description || "",
+        };
+      });
 
-setEvents(loadedEvents);
+      loadedEvents.sort((a, b) => a.date.localeCompare(b.date));
+      setEvents(loadedEvents);
     } catch (error) {
       console.error("Fehler beim Laden aus Firestore:", error);
     }
@@ -587,17 +587,6 @@ const handleSaveMatchday = async () => {
             <div className="text-slate-300 text-sm mt-1">
               {event.description}
             </div>
-            {isAdminUnlocked && (
-  <button
-    onClick={() => {
-      setEvents(events.filter((_, i) => i !== index));
-    }}
-    className="mt-3 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm"
-  >
-    Termin löschen
-  </button>
-)}
-
           </div>
         ))}
       </div>
@@ -620,68 +609,6 @@ const handleSaveMatchday = async () => {
                 </p>
               </div>
             </div>
-            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 space-y-4">
-  <h2 className="text-lg font-bold text-white">
-    📅 Termin hinzufügen
-  </h2>
-
-  <input
-    type="date"
-    value={newEvent.date}
-    onChange={(e) =>
-      setNewEvent({ ...newEvent, date: e.target.value })
-    }
-    className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white"
-  />
-
-  <input
-    type="text"
-    placeholder="Titel"
-    value={newEvent.title}
-    onChange={(e) =>
-      setNewEvent({ ...newEvent, title: e.target.value })
-    }
-    className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white"
-  />
-
-  <textarea
-    placeholder="Beschreibung"
-    value={newEvent.description}
-    onChange={(e) =>
-      setNewEvent({
-        ...newEvent,
-        description: e.target.value,
-      })
-    }
-    className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white"
-  />
-
-  <button
-    onClick={async () => {
-      if (!newEvent.date || !newEvent.title) return;
-
-      const eventId = crypto.randomUUID();
-
-const eventData = {
-  id: eventId,
-  ...newEvent,
-};
-
-await setDoc(doc(db, "events", eventId), eventData);
-
-setEvents((prev) => [...prev, eventData]);
-
-      setNewEvent({
-        date: '',
-        title: '',
-        description: '',
-      });
-    }}
-    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl"
-  >
-    Termin hinzufügen
-  </button>
-</div>
             {/* Datums-Auswahl */}
             <div className="space-y-2">
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest px-1">
