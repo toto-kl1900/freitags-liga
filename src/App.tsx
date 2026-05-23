@@ -9,6 +9,7 @@ import {
   collection,
   getDocs,
   setDoc,
+  deleteDoc,
   doc
 } from "firebase/firestore";
 import {
@@ -115,6 +116,14 @@ useEffect(() => {
       );
 
       setMatchdays(loadedMatchdays);
+      const eventsSnapshot = await getDocs(collection(db, "events"));
+
+const loadedEvents = eventsSnapshot.docs.map((docSnap) => ({
+  id: docSnap.id,
+  ...docSnap.data(),
+}));
+
+setEvents(loadedEvents);
     } catch (error) {
       console.error("Fehler beim Laden aus Firestore:", error);
     }
@@ -648,10 +657,19 @@ const handleSaveMatchday = async () => {
   />
 
   <button
-    onClick={() => {
+    onClick={async () => {
       if (!newEvent.date || !newEvent.title) return;
 
-      setEvents((prev) => [...prev, newEvent]);
+      const eventId = crypto.randomUUID();
+
+const eventData = {
+  id: eventId,
+  ...newEvent,
+};
+
+await setDoc(doc(db, "events", eventId), eventData);
+
+setEvents((prev) => [...prev, eventData]);
 
       setNewEvent({
         date: '',
