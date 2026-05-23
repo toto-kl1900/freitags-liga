@@ -43,7 +43,6 @@ const INITIAL_PLAYERS = [
 interface MatchdayScores {
   [playerName: string]: number;
 }
-
 interface Matchday {
   date: string; // YYYY-MM-DD
   scores: MatchdayScores;
