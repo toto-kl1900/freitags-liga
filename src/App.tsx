@@ -62,18 +62,20 @@ export default function App() {
 const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
 
 const ADMIN_PASSWORD = "dch24";
-const [events, setEvents] = useState([
+
+  const [events, setEvents] = useState([
+    {
+      date: '2026-05-30',
+      title: 'Ligaspieltag',
+      description: 'Freitag ab 19:00 Uhr',
+    },
+  ]);
+  
   const [newEvent, setNewEvent] = useState({
     date: '',
     title: '',
     description: '',
   });
-  {
-    date: '2026-05-30',
-    title: 'Ligaspieltag',
-    description: 'Freitag ab 19:00 Uhr',
-  },
-]);
 
   const [matchdays, setMatchdays] = useState<Matchday[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>(() => {
