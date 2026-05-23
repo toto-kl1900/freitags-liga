@@ -578,6 +578,14 @@ const handleSaveMatchday = async () => {
             <div className="text-slate-300 text-sm mt-1">
               {event.description}
             </div>
+            <button
+  onClick={() => {
+    setEvents(events.filter((_, i) => i !== index));
+  }}
+  className="mt-3 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm"
+>
+  Termin löschen
+</button>
           </div>
         ))}
       </div>
