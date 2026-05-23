@@ -62,7 +62,7 @@ export default function App() {
 const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
 
 const ADMIN_PASSWORD = "dch24";
-const [events, setEvents] = useState([
+const [events] = useState([
   {
     date: '2026-05-30',
     title: 'Ligaspieltag',
@@ -70,11 +70,6 @@ const [events, setEvents] = useState([
   },
 ]);
 
-const [newEvent, setNewEvent] = useState({
-  date: '',
-  title: '',
-  description: '',
-});
   const [matchdays, setMatchdays] = useState<Matchday[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>(() => {
     // Standardmäßig aktuelles Datum als YYYY-MM-DD
