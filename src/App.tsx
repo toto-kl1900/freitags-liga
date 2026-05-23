@@ -588,10 +588,7 @@ const handleSaveMatchday = async () => {
     Termin löschen
   </button>
 )}
-  className="mt-3 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm"
->
-  Termin löschen
-</button>
+
           </div>
         ))}
       </div>
