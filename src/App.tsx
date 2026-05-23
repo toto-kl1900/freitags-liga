@@ -36,6 +36,8 @@ const INITIAL_PLAYERS = [
   'Steven Stahl',
   'Thorsten Wittich',
   'Tobi Kranz',
+  'Andre Jung',
+  'Klaus Pinger',
 ];
 
 interface MatchdayScores {
