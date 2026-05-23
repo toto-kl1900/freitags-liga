@@ -62,7 +62,12 @@ export default function App() {
 const [isAdminUnlocked, setIsAdminUnlocked] = useState(false);
 
 const ADMIN_PASSWORD = "dch24";
-const [events] = useState([
+const [events, setEvents] = useState([
+  const [newEvent, setNewEvent] = useState({
+    date: '',
+    title: '',
+    description: '',
+  });
   {
     date: '2026-05-30',
     title: 'Ligaspieltag',
@@ -593,7 +598,59 @@ const handleSaveMatchday = async () => {
                 </p>
               </div>
             </div>
+            <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 space-y-4">
+  <h2 className="text-lg font-bold text-white">
+    📅 Termin hinzufügen
+  </h2>
 
+  <input
+    type="date"
+    value={newEvent.date}
+    onChange={(e) =>
+      setNewEvent({ ...newEvent, date: e.target.value })
+    }
+    className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white"
+  />
+
+  <input
+    type="text"
+    placeholder="Titel"
+    value={newEvent.title}
+    onChange={(e) =>
+      setNewEvent({ ...newEvent, title: e.target.value })
+    }
+    className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white"
+  />
+
+  <textarea
+    placeholder="Beschreibung"
+    value={newEvent.description}
+    onChange={(e) =>
+      setNewEvent({
+        ...newEvent,
+        description: e.target.value,
+      })
+    }
+    className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white"
+  />
+
+  <button
+    onClick={() => {
+      if (!newEvent.date || !newEvent.title) return;
+
+      setEvents((prev) => [...prev, newEvent]);
+
+      setNewEvent({
+        date: '',
+        title: '',
+        description: '',
+      });
+    }}
+    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl"
+  >
+    Termin hinzufügen
+  </button>
+</div>
             {/* Datums-Auswahl */}
             <div className="space-y-2">
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest px-1">
